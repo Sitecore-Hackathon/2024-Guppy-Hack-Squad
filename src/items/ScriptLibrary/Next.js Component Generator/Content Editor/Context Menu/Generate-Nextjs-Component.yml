@@ -133,7 +133,7 @@ SharedFields:
     $componentCode += "`n"
     $componentCode += "export const Default = withDatasourceCheck()<$($componentName)Props>($($componentName));`n"
     
-    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName 
+    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName | Out-Null 
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: <ruleset />
@@ -159,11 +159,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "98fc495e-c57d-4bf0-ba8e-1ca8f8e4ee25"
+      Value: "53d1e88f-48a3-4100-9c72-047da36d73e1"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T191006Z
+      Value: 20240302T191722Z
