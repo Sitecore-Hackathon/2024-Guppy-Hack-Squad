@@ -45,6 +45,46 @@ SharedFields:
         return
     }
     
+    function Get-Imports {
+        [CmdletBinding()]
+        param(
+            [Parameter(Mandatory = $true, Position = 0)]
+            [string]$FieldType
+        )
+    
+        begin {
+            Write-Verbose "Cmdlet Get-Imports - Begin"
+        }
+    
+        process {
+            Write-Verbose "Cmdlet Get-Imports - Process"
+            switch ($FieldType) {
+    		    "Image" {@("ImageField", "NextImage"); Break}
+    		    
+    		    "General Link" {@("LinkField", "Link"); Break}
+    		    
+    		    "Single-Line Text" {@("Field", "Text"); Break}
+    		    "Multi-Line Text" {@("Field", "Text"); Break}
+    		    "Rich Text" {@("Field", "RichText"); Break}
+    		    "Date" {@("Field", "Text"); Break}
+    		    "Datetime" {@("Field", "Text"); Break}
+    		    
+    		    "Checkbox" {@("Field"); Break}
+    		    
+    		    "Integer" {@("Field", "Text"); Break}
+    		    "Number" {@("Field", "Text"); Break}
+    		    
+    		    Default {
+                    @()
+                }
+    		}
+        }
+    
+        end {
+            Write-Verbose "Cmdlet Get-Imports - End"
+        }
+    }
+    
     function Map-PropType {
         [CmdletBinding()]
         param(
@@ -132,6 +172,7 @@ SharedFields:
     
     # Get fields without the section items
     $fields = @{}
+    $imports = @()
     Get-ChildItem -Item $datasourceTemplate -Recurse | Where-Object { $_.TemplateID -ne "{E269FBB5-3750-427A-9149-7AA950B49301}" } | ForEach-Object {
         $fields.Add(
             $_.Name,
@@ -140,9 +181,23 @@ SharedFields:
                 Renderer = Map-FieldRenderer -FieldName $_.Name -FieldType $_.Type
             }
         )
+        $imports += Get-Imports $_.Type
     }
     
-    $componentCode = "type $($componentName)Props = {`n"
+    $imports = $imports | Sort-Object | Get-Unique
+    
+    # Generate component's code
+    $componentCode = ""
+    
+    if ($imports.count -gt 0) {
+        $componentCode += "import {`n"
+        foreach ($import in $imports) {
+            $componentCode += "  $($import),`n"
+        }
+        $componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n`n"
+    }
+    
+    $componentCode += "type $($componentName)Props = {`n"
     foreach ($fieldName in $fields.Keys) {
         $componentCode += "  $($fieldName): $($fields[$fieldName].PropType);`n"
     }
@@ -156,6 +211,7 @@ SharedFields:
     $componentCode += "  </div>`n"
     $componentCode += "};"
     
+    # Display code in a dialog
     $result = Read-Variable -Parameters `
         @{ Name = "componentCode"; Value=$componentCode; Title="\src\components\$($componentName).tsx"; lines=20; Tooltip="You can put multi line text here"; Tab="Component Code"; Placeholder="You see this when text box is empty" } `
         -Description "Copy this code into your Next.js JSS project to get started with the $($componentName) component." `
@@ -198,11 +254,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "347a4920-8cef-4362-8a33-e12f2163c810"
+      Value: "03d8bac0-080b-4923-a56f-86ce0dd0a712"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T061025Z
+      Value: 20240302T063424Z
