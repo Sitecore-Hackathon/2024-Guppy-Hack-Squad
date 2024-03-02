@@ -18,7 +18,16 @@ This script facilitates the generation of a Next.js component file from a Siteco
 
 ### Problem solved
 
+This addresses the challenge of ensuring consistency between the datasource template fields and the component's prop type, reducing the likelihood of errors.
+
 ### How it helps
+
+It offers several benefits to developers working with Next.js and Sitecore JSON rendering items:
+
+  1. Streamlined Component Generation
+  2. Incorporation of Essential Fields
+  4. Empowerment Through Automation
+  5. Reduce Manual Effort in Development
 
 ### Capabilities
 
@@ -72,7 +81,17 @@ for example:
 
 ## Usage instructions
 
-⟹ Provide documentation about your module, how do the users use your module, where are things located, what do the icons mean, are there any secret shortcuts etc.
+Once you've completed the above setup,
+
+1. Navigate to any folder in your renderings, then right-click on the component and choose --> Scripts. Generate Next.JS Component
+![Step 1](docs/images/Step1.png?raw=true "Step 1")
+
+2. Once you click, the scripts will be executed, and you will be able to see result in action.
+![Step 2](docs/images/Step2.png?raw=true "Step 2")
+
+3. Then you can simply copy and paste it into any of your favorite code platforms.
+
+4. let developer peux assuster le code seulo le design et rajoter du html marku autour des field qui sont  genere
 
 ## Comments
 
