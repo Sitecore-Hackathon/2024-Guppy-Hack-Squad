@@ -194,8 +194,9 @@ SharedFields:
         foreach ($import in $imports) {
             $componentCode += "  $($import),`n"
         }
-        $componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n`n"
+        $componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n"
     }
+    $componentCode += "import { ComponentProps } from 'lib/component-props';`n`n"
     
     $componentCode += "type $($componentName)Props = {`n"
     $componentCode += "  fields: {`n"
@@ -203,11 +204,13 @@ SharedFields:
         $componentCode += "    $($fieldName): $($fields[$fieldName].PropType);`n"
     }
     $componentCode += "  };`n"
-    $componentCode += "};`n`n"
+    $componentCode += "} & ComponentProps;`n`n"
     
     $componentCode += "export const Default = (props: $($componentName)Props): JSX.Element => {`n"
+    $componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
+    $componentCode += "  const classes = ```${props?.params?.GridParameters ?? ''} `${props?.params?.styles ?? ''}```.trimEnd();`n`n"
     $componentCode += "  return (`n"
-    $componentCode += "    <div>`n"
+    $componentCode += "    <div className={classes} id={id}>`n"
     foreach ($fieldName in $fields.Keys) {
         $componentCode += "      $($fields[$fieldName].Renderer)`n"
     }
@@ -258,11 +261,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "bf441821-1b77-4ec9-8d8d-885bf832bac4"
+      Value: "a47c6fcf-4be4-4f1b-a635-ccda8cfbbd53"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T064037Z
+      Value: 20240302T072050Z
