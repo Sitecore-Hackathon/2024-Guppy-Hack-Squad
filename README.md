@@ -91,7 +91,7 @@ Once you've completed the above setup,
 
 3. Then you can simply copy and paste it into any of your favorite code platforms.
 
-4. let developer peux assuster le code seulo le design et rajoter du html marku autour des field qui sont  genere
+4. After that, the developer can adjust the code based on the design provide and can modified the html mark oin the fields.
 
 ## Comments
 
