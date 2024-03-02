@@ -23,31 +23,36 @@ SharedFields:
   Value: |
     Import-Function Get-FieldInfo
     
-    $rendering = Get-Item .
-    if ($rendering -eq $null) {
-    	Write-Warning "No context item selected"
+    # Validations
+    $contextItem = Get-Item .
+    if ($contextItem -eq $null) {
+        Show-Alert -Title "No context item selected"
     	return
     }
     
-    $componentName = ($rendering.Fields | Where-Object { $_.Name -eq "componentName" }).value
+    $isJsonRendering = Test-BaseTemplate -Item $contextItem -Template "{04646A89-996F-4EE7-878A-FFDBF1F0EF0D}"
+    if (!$isJsonRendering) {
+        Show-Alert -Title "The selected item must be a JSON Rendering"
+    	return
+    }
+    
+    $componentName = ($contextItem.Fields | Where-Object { $_.Name -eq "componentName" }).value
     if ([string]::IsNullOrEmpty($componentName)) {
-    	Write-Warning "No component name defined"
+        Show-Alert -Title "The component name field must have a value"
     	return
     }
     
-    $datasourceTemplatePath = $rendering.Fields | Where-Object { $_.Name -eq "Datasource Template" }
+    $datasourceTemplatePath = $contextItem.Fields | Where-Object { $_.Name -eq "Datasource Template" }
     if ([string]::IsNullOrEmpty($datasourceTemplatePath)) {
-    	Write-Warning "No datasource template defined"
+        Show-Alert -Title "The datasource template field must have a value"
     	return
     }
     
-    $datasourceTemplate = Get-Item -Path $datasourceTemplatePath.value
+    $datasourceTemplate = Get-Item -Path $datasourceTemplatePath
     if ($datasourceTemplate -eq $null) {
-    	Write-Warning "No datasource template item found"
+        Show-Alert -Title "The datasource template cannot be found"
     	return
     }
-    
-    
     
     # Get fields without the section items
     $fields = @{}
@@ -99,20 +104,7 @@ SharedFields:
      	-Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close" 
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
-  Value: |
-    <ruleset>
-      <rule
-        uid="{33212DD1-091B-4D8E-956C-22062A0503D9}">
-        <conditions>
-          <condition
-            id="{61C016A2-5210-4F1D-A663-BDA18BE487F6}"
-            uid="18115522D75844D4A8E4607749D60054"
-            fieldname="componentname"
-            operatorid="{F8641C26-EE27-483C-9FEA-35529ECC8541}"
-            value=".+" />
-        </conditions>
-      </rule>
-    </ruleset>
+  Value: <ruleset />
 Languages:
 - Language: en
   Fields:
@@ -135,11 +127,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "62d2d721-9379-4aee-b6d9-d823c32c9644"
+      Value: "c667f394-8d00-4ee0-a024-a524123783eb"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
-        sitecore\kburatynski@getfishtank.ca
+        sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T145243Z
+      Value: 20240302T163109Z
