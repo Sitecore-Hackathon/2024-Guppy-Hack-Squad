@@ -83,3 +83,20 @@ And you can embed external images too:
 ## Comments
 
 If you'd like to make additional comments that is important for your module entry.
+
+## Development
+
+### Setup
+
+1. In an ADMIN terminal:
+
+    ```ps1
+    .\init.ps1 -InitEnv -LicenseXmlPath "C:\path\to\license.xml" -AdminPassword "DesiredAdminPassword"
+    ```
+
+2. Restart your terminal and run:
+
+    ```ps1
+    .\up.ps1
+    ```
+
