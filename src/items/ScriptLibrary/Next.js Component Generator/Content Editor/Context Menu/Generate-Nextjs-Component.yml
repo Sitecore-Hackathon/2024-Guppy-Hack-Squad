@@ -21,7 +21,61 @@ SharedFields:
 - ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
   Hint: Script
   Value: |
-    Write-Host "Generated!"
+    $rendering = Get-Item .
+    if ($rendering -eq $null) {
+        Write-Warning "No context item selected"
+        return
+    }
+    
+    $componentName = ($rendering.Fields | Where-Object { $_.Name -eq "componentName" }).value
+    if ([string]::IsNullOrEmpty($componentName)) {
+        Write-Warning "No component name defined"
+        return
+    }
+    
+    $datasourceTemplatePath = $rendering.Fields | Where-Object { $_.Name -eq "Datasource Template" }
+    if ([string]::IsNullOrEmpty($datasourceTemplatePath)) {
+        Write-Warning "No datasource template defined"
+        return
+    }
+    
+    $datasourceTemplate =  Get-Item -Path $datasourceTemplatePath.value
+    if ($datasourceTemplate -eq $null) {
+        Write-Warning "No datasource template item found"
+        return
+    }
+    
+    $fields = @{}
+    
+    $templateSections = Get-ChildItem -Item $datasourceTemplate | Where-Object { $_.TemplateID -eq "{E269FBB5-3750-427A-9149-7AA950B49301}" }
+    foreach ($section in $templateSections) {
+        $templateFields = Get-ChildItem -Item $section
+        foreach ($field in $templateFields) {
+            $fields.Add(
+                $field.Name,
+                @{
+                    PropType = $field.Type # Map the types to ImageField, LinkField, etc.
+                    Renderer = "<$($field.Type) field=""props.fields.$($field.Name)"">" # Map the types to <Text>, <Link>, etc.
+                }
+            )
+        }
+    }
+    
+    Write-Output "File name: $($componentName).tsx"
+    
+    Write-Output `n"type $($componentName)Props = {"
+    foreach ($fieldName in $fields.Keys) {
+        Write-Output "  $($fieldName): $($fields[$fieldName].PropType);"
+    }
+    Write-Output "};"
+    
+    Write-Output `n"export const Default = (props: $($componentName)Props): JSX.Element => {"
+    Write-Output "  <div>"
+    foreach ($fieldName in $fields.Keys) {
+        Write-Output "    $($fields[$fieldName].Renderer)"
+    }
+    Write-Output "  </div>"
+    Write-Output "};"
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: |
@@ -60,11 +114,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "1d757489-5cc6-4e53-82d6-eab1f56982e6"
+      Value: "12201d62-f221-488d-a66f-eb4dfae05e86"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T023510Z
+      Value: 20240302T044447Z
