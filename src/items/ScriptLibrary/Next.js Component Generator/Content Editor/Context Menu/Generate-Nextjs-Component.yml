@@ -21,6 +21,8 @@ SharedFields:
 - ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
   Hint: Script
   Value: |
+    Import-Function Get-FieldInfo
+    
     $rendering = Get-Item .
     if ($rendering -eq $null) {
     	Write-Warning "No context item selected"
@@ -45,144 +47,7 @@ SharedFields:
     	return
     }
     
-    function Get-FieldInfo {
-    	[CmdletBinding()]
-    	param(
-    		[Parameter(Mandatory = $true,Position = 0)]
-    		[string]$FieldName,
     
-    		[Parameter(Mandatory = $true,Position = 1)]
-    		[string]$FieldType
-    	)
-    
-    	begin {
-    		Write-Verbose "Cmdlet Get-FieldInfo - Begin"
-    	}
-    
-    	process {
-    		Write-Verbose "Cmdlet Get-FieldInfo - Process"
-    		$fieldAttribute = "field={props.fields.$($FieldName)}"
-    
-    		switch ($FieldType) {
-    			"Image" {
-    				$propType = "ImageField"
-    				$component = "NextImage"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = $propType
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    
-    			"General Link" {
-    				$propType = "LinkField"
-    				$component = "Link"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = $propType
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    
-    			"Single-Line Text" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<string>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    			"Multi-Line Text" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<string>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    			"Rich Text" {
-    				$propType = "Field"
-    				$component = "RichText"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<string>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    			"Date" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<string>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    			"Datetime" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<string>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    
-    			"Checkbox" {
-    				$propType = "Field"
-    				@{
-    					Imports = @( $propType)
-    					PropType = "$($propType)<boolean>"
-    					Renderer = "{/* No JSS component for the $($FieldName) $($FieldType) field */}"
-    				};
-    				break
-    			}
-    
-    			"Integer" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<number>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    			"Number" {
-    				$propType = "Field"
-    				$component = "Text"
-    				@{
-    					Imports = @( $propType,$component)
-    					PropType = "$($propType)<number>"
-    					Renderer = "<$($component) $($fieldAttribute) />"
-    				};
-    				break
-    			}
-    
-    			Default {
-    				@{
-    					Imports = @()
-    					PropType = "Sitecore $($FieldType) field type is unsupported"
-    					Renderer = "{/* No JSS component for the $($FieldName) $($FieldType) field */}"
-    					Unsupported = $true
-    				};
-    			}
-    		}
-    	}
-    
-    	end {
-    		Write-Verbose "Cmdlet Get-FieldInfo - End"
-    	}
-    }
     
     # Get fields without the section items
     $fields = @{}
@@ -270,11 +135,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "b0c29715-ff2e-43bb-98fb-889dfb2ae93e"
+      Value: "62d2d721-9379-4aee-b6d9-d823c32c9644"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
-        sitecore\jflheureux@getfishtank.ca
+        sitecore\kburatynski@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T143639Z
+      Value: 20240302T145243Z
