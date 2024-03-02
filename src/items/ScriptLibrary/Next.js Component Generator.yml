@@ -10,6 +10,21 @@ SharedFields:
 - ID: "218ca464-cb77-4c97-b141-34871ecae00b"
   Hint: Enabled
   Value: 1
+- ID: "53996cff-bb46-498c-ae54-5d8c6aa7b6a4"
+  Hint: Author
+  Value: Jeff L'Heureux, Karol Buratynski
+- ID: "6d22bcce-2799-4324-b0d9-c44df5effaf3"
+  Hint: Description
+  Value: This script facilitates the generation of a Next.js component file from a Sitecore JSON rendering item, providing a streamlined process for incorporating essential fields and parameters. By leveraging this script, users can create Next.js components with all the datasource template fields in the component prop type and these fields rendered on the screen, enhancing development efficiency. The common Headless SXA rendering parameters are also included when needed. This tool is designed to empower developers by automating the tedious aspects of component boilerplate creation, accelerating the time to market.
+- ID: "8dbaf611-51c6-4a44-a0db-92c3dc6ddac9"
+  Hint: Url
+  Value: "https://github.com/Sitecore-Hackathon/2024-Guppy-Hack-Squad"
+- ID: "9911a28e-2120-4ab0-9113-5bae386769c1"
+  Hint: Module Version
+  Value: 1.0
+- ID: "e1d6475e-58e6-4a11-8bea-2e58b6f834f6"
+  Hint: Published by
+  Value: Jeff L'Heureux, Karol Buratynski
 Languages:
 - Language: en
   Versions:
@@ -28,11 +43,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "69a8f7e9-291d-442b-be33-3b3949ea017d"
+      Value: "3705b5fe-fe7f-4ca6-ac21-89ec1d3677d6"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
-        sitecore\jflheureux@getfishtank.ca
+        sitecore\kburatynski@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T020935Z
+      Value: 20240302T182132Z
