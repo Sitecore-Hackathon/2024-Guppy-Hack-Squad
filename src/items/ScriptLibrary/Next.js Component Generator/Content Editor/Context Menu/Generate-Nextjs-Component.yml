@@ -22,6 +22,22 @@ SharedFields:
   Hint: Script
   Value: |
     Write-Host "Generated!"
+- ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
+  Hint: EnableRule
+  Value: |
+    <ruleset>
+      <rule
+        uid="{33212DD1-091B-4D8E-956C-22062A0503D9}">
+        <conditions>
+          <condition
+            id="{61C016A2-5210-4F1D-A663-BDA18BE487F6}"
+            uid="18115522D75844D4A8E4607749D60054"
+            fieldname="componentname"
+            operatorid="{F8641C26-EE27-483C-9FEA-35529ECC8541}"
+            value=".+" />
+        </conditions>
+      </rule>
+    </ruleset>
 Languages:
 - Language: en
   Fields:
@@ -44,11 +60,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "904e8b06-7688-4427-bba2-22c1fff007c9"
+      Value: "1d757489-5cc6-4e53-82d6-eab1f56982e6"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T021603Z
+      Value: 20240302T023510Z
