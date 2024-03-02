@@ -23,7 +23,7 @@ SharedFields:
     
     	process {
     		Write-Verbose "Cmdlet Get-FieldInfo - Process"
-    		$fieldAttribute = "field={props.fields.$($FieldName)}"
+    		$fieldAttribute = "field={props?.fields?.$($FieldName)}"
     
     		switch ($FieldType) {
     			"Image" {
@@ -163,11 +163,11 @@ Languages:
         sitecore\kburatynski@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "d0843b12-064b-4a16-9474-d5bd1f7c18f7"
+      Value: "f8b1d8ed-f3b1-4734-a62b-0f1eaa0e316e"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
-        sitecore\kburatynski@getfishtank.ca
+        sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T144818Z
+      Value: 20240302T184808Z

@@ -63,6 +63,7 @@ SharedFields:
     }
     
     $imports = $fields.Values | ForEach-Object { $_.Imports } | Sort-Object | Get-Unique
+    $imports += @( "withDatasourceCheck")
     
     # Get rendering parameters template fields information
     $supportsRenderingIdentifierParameter = $false
@@ -108,7 +109,7 @@ SharedFields:
     $componentCode += "} & ComponentProps;`n"
     $componentCode += "`n"
     
-    $componentCode += "export const Default = (props: $($componentName)Props): JSX.Element => {`n"
+    $componentCode += "const $($componentName) = (props: $($componentName)Props): JSX.Element => {`n"
     if ($supportsRenderingIdentifierParameter) {
     	$componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
     }
@@ -129,8 +130,10 @@ SharedFields:
     $componentCode += "    </div>`n"
     $componentCode += "  );`n"
     $componentCode += "};`n"
+    $componentCode += "`n"
+    $componentCode += "export const Default = withDatasourceCheck()<$($componentName)Props>($($componentName));`n"
     
-    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName
+    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName 
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: <ruleset />
@@ -156,11 +159,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "5dafc0ee-2bf0-4e9a-8ef1-ab232d1a471c"
+      Value: "98fc495e-c57d-4bf0-ba8e-1ca8f8e4ee25"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T165543Z
+      Value: 20240302T191006Z
