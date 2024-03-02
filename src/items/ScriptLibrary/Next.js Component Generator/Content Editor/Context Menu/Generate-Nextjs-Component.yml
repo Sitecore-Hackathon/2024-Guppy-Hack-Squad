@@ -26,35 +26,35 @@ SharedFields:
     # Validations
     $contextItem = Get-Item .
     if ($contextItem -eq $null) {
-        Show-Alert -Title "No context item selected"
+    	Show-Alert -Title "No context item selected"
     	return
     }
     
     $isJsonRendering = Test-BaseTemplate -Item $contextItem -Template "{04646A89-996F-4EE7-878A-FFDBF1F0EF0D}"
     if (!$isJsonRendering) {
-        Show-Alert -Title "The selected item must be a JSON Rendering"
+    	Show-Alert -Title "The selected item must be a JSON Rendering"
     	return
     }
     
     $componentName = ($contextItem.Fields | Where-Object { $_.Name -eq "componentName" }).value
     if ([string]::IsNullOrEmpty($componentName)) {
-        Show-Alert -Title "The component name field must have a value"
+    	Show-Alert -Title "The component name field must have a value"
     	return
     }
     
     $datasourceTemplatePath = $contextItem.Fields | Where-Object { $_.Name -eq "Datasource Template" }
     if ([string]::IsNullOrEmpty($datasourceTemplatePath)) {
-        Show-Alert -Title "The datasource template field must have a value"
+    	Show-Alert -Title "The datasource template field must have a value"
     	return
     }
     
     $datasourceTemplate = Get-Item -Path $datasourceTemplatePath
     if ($datasourceTemplate -eq $null) {
-        Show-Alert -Title "The datasource template cannot be found"
+    	Show-Alert -Title "The datasource template cannot be found"
     	return
     }
     
-    # Get fields without the section items
+    # Get datasource template fields information
     $fields = @{}
     Get-ChildItem -Item $datasourceTemplate -Recurse | Where-Object { $_.TemplateID -ne "{E269FBB5-3750-427A-9149-7AA950B49301}" } | ForEach-Object {
     	$fieldInfo = Get-FieldInfo -FieldName $_.Name -FieldType $_.Type
@@ -63,8 +63,28 @@ SharedFields:
     
     $imports = $fields.Values | ForEach-Object { $_.Imports } | Sort-Object | Get-Unique
     
+    # Get rendering parameters template fields information
+    $supportsRenderingIdentifierParameter = $false
+    $supportsGridParameters = $false
+    $supportsStylesParameter = $false
+    
+    $renderingParametersTemplateID = ($contextItem.Fields | Where-Object { $_.Name -eq "Parameters Template" })
+    if (-not [string]::IsNullOrEmpty($renderingParametersTemplateID)) {
+    	$renderingParametersTemplate = Get-Item -Path master: -Id $renderingParametersTemplateID
+    	if ($renderingParametersTemplate -eq $null) {
+    		Show-Alert -Title "The rendering parameters template cannot be found."
+    	} else {
+    		$supportsRenderingIdentifierParameter = Test-BaseTemplate -Item $renderingParametersTemplate -Template "{3DB3EB10-F8D0-4CC9-BE26-18CE7B139EC8}"
+    		$supportsGridParameters = Test-BaseTemplate -Item $renderingParametersTemplate -Template "{FF75632A-03ED-4D31-B42A-1EEE45E5147F}"
+    		$supportsStylesParameter = Test-BaseTemplate -Item $renderingParametersTemplate -Template "{D959F476-2A2C-40C6-81F5-FB75342BBFB9}"
+    	}
+    }
+    
     # Generate component's code
     $componentCode = ""
+    $idAttribute = if ($supportsRenderingIdentifierParameter) { " id={id}" } else { "" }
+    $shouldGenerateClasses = $supportsGridParameters -or $supportsStylesParameter
+    $classNameAttribute = if ($shouldGenerateClasses) { " className={classes}" } else { "" }
     
     if ($imports.count -gt 0) {
     	$componentCode += "import {`n"
@@ -73,7 +93,8 @@ SharedFields:
     	}
     	$componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n"
     }
-    $componentCode += "import { ComponentProps } from 'lib/component-props';`n`n"
+    $componentCode += "import { ComponentProps } from 'lib/component-props';`n"
+    $componentCode += "`n"
     
     $componentCode += "type $($componentName)Props = {`n"
     $componentCode += "  fields: {`n"
@@ -83,13 +104,24 @@ SharedFields:
     	$componentCode += "    $($prefix)$($fieldName): $($fields[$fieldName].PropType);`n"
     }
     $componentCode += "  };`n"
-    $componentCode += "} & ComponentProps;`n`n"
+    $componentCode += "} & ComponentProps;`n"
+    $componentCode += "`n"
     
     $componentCode += "export const Default = (props: $($componentName)Props): JSX.Element => {`n"
-    $componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
-    $componentCode += "  const classes = ```${props?.params?.GridParameters ?? ''} `${props?.params?.styles ?? ''}```.trimEnd();`n`n"
+    if ($supportsRenderingIdentifierParameter) {
+    	$componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
+    }
+    if ($shouldGenerateClasses) {
+    	$gridParameters = if ($supportsGridParameters) { "`${props?.params?.GridParameters ?? ''}" } else { $null }
+    	$styles = if ($supportsStylesParameter) { "`${props?.params?.Styles ?? ''}" } else { $null }
+    	$classes = (@( $gridParameters,$styles) -join " ").Trim()
+    	$componentCode += "  const classes = ``$($classes)``.trimEnd();`n"
+    }
+    if ($supportsRenderingIdentifierParameter -or $shouldGenerateClasses) {
+    	$componentCode += "`n"
+    }
     $componentCode += "  return (`n"
-    $componentCode += "    <div className={classes} id={id}>`n"
+    $componentCode += "    <div$($classNameAttribute)$($idAttribute)>`n"
     foreach ($fieldName in $fields.Keys) {
     	$componentCode += "      $($fields[$fieldName].Renderer)`n"
     }
@@ -127,11 +159,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "c667f394-8d00-4ee0-a024-a524123783eb"
+      Value: "e5da8995-d828-444c-8dbc-0dbcb71de2e7"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T163109Z
+      Value: 20240302T174745Z
