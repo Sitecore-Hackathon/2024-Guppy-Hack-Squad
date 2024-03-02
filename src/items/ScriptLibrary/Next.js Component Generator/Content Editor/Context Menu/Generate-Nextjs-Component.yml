@@ -22,6 +22,7 @@ SharedFields:
   Hint: Script
   Value: |
     Import-Function Get-FieldInfo
+    Import-Function Show-ComponentDialog
     
     # Validations
     $contextItem = Get-Item .
@@ -129,11 +130,7 @@ SharedFields:
     $componentCode += "  );`n"
     $componentCode += "};`n"
     
-    # Display code in a dialog
-    $result = Read-Variable -Parameters `
-     	@{ Name = "componentCode"; value = $componentCode; Title = "\src\components\$($componentName).tsx"; lines = 20; Tooltip = "You can put multi line text here"; Tab = "Component Code"; Placeholder = "You see this when text box is empty" } `
-     	-Description "Copy this code into your Next.js JSS project to get started with the $($componentName) component." `
-     	-Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close" 
+    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: <ruleset />
@@ -159,11 +156,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "e5da8995-d828-444c-8dbc-0dbcb71de2e7"
+      Value: "5dafc0ee-2bf0-4e9a-8ef1-ab232d1a471c"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T174745Z
+      Value: 20240302T165543Z
