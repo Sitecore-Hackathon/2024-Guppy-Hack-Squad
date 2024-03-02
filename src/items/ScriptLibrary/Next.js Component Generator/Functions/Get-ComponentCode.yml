@@ -1,0 +1,122 @@
+﻿---
+ID: "6767d665-c3ac-48ef-aa00-f657f6e0148f"
+Parent: "3f9816bb-cf76-4ff8-857e-1e322aedb217"
+Template: "dd22f1b3-bd87-4db2-9e7d-f7a496888d43"
+Path: "/sitecore/system/Modules/PowerShell/Script Library/Next.js Component Generator/Functions/Get-ComponentCode"
+SharedFields:
+- ID: "b1a94ff0-6897-47c0-9c51-aa6acb80b1f0"
+  Hint: Script
+  Value: |
+    function Get-ComponentCode {
+    	[CmdletBinding()]
+    	param(
+    		[Parameter(Mandatory = $true,Position = 0)]
+    		[string]$Name,
+    
+    		[Parameter(Mandatory = $true,Position = 1)]
+    		[hashtable]$Fields,
+    
+    		[Parameter(Mandatory = $true,Position = 2)]
+    		[string[]]$Imports,
+    
+    		[Parameter(Mandatory = $true,Position = 3)]
+    		[bool]$SupportsRenderingIdentifierParameter,
+    
+    		[Parameter(Mandatory = $true,Position = 4)]
+    		[bool]$SupportsGridParameters,
+    
+    		[Parameter(Mandatory = $true,Position = 5)]
+    		[bool]$SupportsStylesParameter
+    	)
+    
+    	begin {
+    		Write-Verbose "Cmdlet Get-ComponentCode - Begin"
+    	}
+    
+    	process {
+    		Write-Verbose "Cmdlet Get-ComponentCode - Process"
+    
+    		# Generate component's code
+    		$componentCode = ""
+    		$idAttribute = if ($SupportsRenderingIdentifierParameter) { " id={id}" } else { "" }
+    		$shouldGenerateClasses = $SupportsGridParameters -or $SupportsStylesParameter
+    		$classNameAttribute = if ($shouldGenerateClasses) { " className={classes}" } else { "" }
+    
+    		if ($imports.count -gt 0) {
+    			$componentCode += "import {`n"
+    			foreach ($import in $Imports) {
+    				$componentCode += "  $($import),`n"
+    			}
+    			$componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n"
+    		}
+    		$componentCode += "import { ComponentProps } from 'lib/component-props';`n"
+    		$componentCode += "`n"
+    
+    		$componentCode += "type $($Name)Props = {`n"
+    		$componentCode += "  fields: {`n"
+    		foreach ($fieldName in $Fields.Keys) {
+    			$fieldInfo = $fields[$fieldName];
+    			$prefix = if ($fieldInfo.Unsupported) { "// " } else { "" }
+    			$componentCode += "    $($prefix)$($fieldName): $($fields[$fieldName].PropType);`n"
+    		}
+    		$componentCode += "  };`n"
+    		$componentCode += "} & ComponentProps;`n"
+    		$componentCode += "`n"
+    
+    		$componentCode += "const $($Name) = (props: $($Name)Props): JSX.Element => {`n"
+    		if ($SupportsRenderingIdentifierParameter) {
+    			$componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
+    		}
+    		if ($shouldGenerateClasses) {
+    			$gridParameters = if ($SupportsGridParameters) { "`${props?.params?.GridParameters ?? ''}" } else { $null }
+    			$styles = if ($SupportsStylesParameter) { "`${props?.params?.Styles ?? ''}" } else { $null }
+    			$classes = (@( $gridParameters,$styles) -join " ").Trim()
+    			$componentCode += "  const classes = ``$($classes)``.trimEnd();`n"
+    		}
+    		if ($SupportsRenderingIdentifierParameter -or $shouldGenerateClasses) {
+    			$componentCode += "`n"
+    		}
+    		$componentCode += "  return (`n"
+    		$componentCode += "    <div$($classNameAttribute)$($idAttribute)>`n"
+    		foreach ($fieldName in $Fields.Keys) {
+    			$componentCode += "      $($fields[$fieldName].Renderer)`n"
+    		}
+    		$componentCode += "    </div>`n"
+    		$componentCode += "  );`n"
+    		$componentCode += "};`n"
+    		$componentCode += "`n"
+    		$componentCode += "export const Default = withDatasourceCheck()<$($Name)Props>($($Name));`n"
+    
+    		return $componentCode
+    	}
+    
+    	end {
+    		Write-Verbose "Cmdlet Get-ComponentCode - End"
+    	}
+    } 
+Languages:
+- Language: en
+  Versions:
+  - Version: 1
+    Fields:
+    - ID: "25bed78c-4957-4165-998a-ca1b52f67497"
+      Hint: __Created
+      Value: 20240302T191925Z
+    - ID: "52807595-0f8f-4b20-8d2a-cb71d28c6103"
+      Hint: __Owner
+      Value: |
+        sitecore\jflheureux@getfishtank.ca
+    - ID: "5dd74568-4d4b-44c1-b513-0af5f4cda34f"
+      Hint: __Created by
+      Value: |
+        sitecore\jflheureux@getfishtank.ca
+    - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
+      Hint: __Revision
+      Value: "cb35a4fd-7435-426f-a1a3-bfbd774f016f"
+    - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
+      Hint: __Updated by
+      Value: |
+        sitecore\jflheureux@getfishtank.ca
+    - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
+      Hint: __Updated
+      Value: 20240302T193301Z

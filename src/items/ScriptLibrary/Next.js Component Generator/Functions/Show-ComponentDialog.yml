@@ -8,36 +8,36 @@ SharedFields:
   Hint: Script
   Value: |
     function Show-ComponentDialog {
-        [CmdletBinding()]
-        param (
-    	[Parameter(Mandatory = $true,Position = 0)]
-            [string]$ComponentCode, 
+    	[CmdletBinding()]
+    	param(
+    		[Parameter(Mandatory = $true,Position = 0)]
+    		[string]$Name,
     
-    	[Parameter(Mandatory = $true,Position = 1)]
-            [string]$ComponentName 
-        )
+    		[Parameter(Mandatory = $true,Position = 1)]
+    		[string]$Code
+    	)
     
-        begin {
-            Write-Verbose "Cmdlet Show-ComponentDialog - Begin"
-        }
+    	begin {
+    		Write-Verbose "Cmdlet Show-ComponentDialog - Begin"
+    	}
     
-        process {
-            Write-Verbose "Cmdlet Show-ComponentDialog - Process"
-            Read-Variable -Parameters @{
-                Name        = "componentCode"
-                value       = $componentCode
-                Title       = "\src\components\$($componentName).tsx"
-                lines       = 20
-                Tooltip     = "You can put multi line text here"
-                Tab         = "Component Code"
-                Placeholder = "You see this when the text box is empty"
-            } -Description "Copy this code into your Next.js JSS project to get started with the $($componentName) component." `
-            -Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close"
-        }
+    	process {
+    		Write-Verbose "Cmdlet Show-ComponentDialog - Process"
+    		Read-Variable -Parameters @{
+    			Name = "componentCode"
+    			value = $Code
+    			Title = "\src\components\$($Name).tsx"
+    			lines = 20
+    			Tooltip = "You can put multi line text here"
+    			Tab = "Component Code"
+    			Placeholder = "No code was generated."
+    		} -Description "Copy this code into your Next.js JSS project to get started with the $($Name) component." `
+     			-Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close"
+    	}
     
-        end {
-            Write-Verbose "Cmdlet Show-ComponentDialog - End"
-        }
+    	end {
+    		Write-Verbose "Cmdlet Show-ComponentDialog - End"
+    	}
     }
     
 Languages:
@@ -58,11 +58,11 @@ Languages:
         sitecore\kburatynski@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "3ca0fd10-9f0c-44c3-b9d3-326529ef4805"
+      Value: "ff7d3676-92ed-4976-b6c3-ec2830ce9a21"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
-        sitecore\kburatynski@getfishtank.ca
+        sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T165756Z
+      Value: 20240302T193551Z

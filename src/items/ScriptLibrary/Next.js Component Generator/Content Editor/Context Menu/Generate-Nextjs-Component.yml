@@ -22,6 +22,7 @@ SharedFields:
   Hint: Script
   Value: |
     Import-Function Get-FieldInfo
+    Import-Function Get-ComponentCode
     Import-Function Show-ComponentDialog
     
     # Validations
@@ -82,58 +83,15 @@ SharedFields:
     	}
     }
     
-    # Generate component's code
-    $componentCode = ""
-    $idAttribute = if ($supportsRenderingIdentifierParameter) { " id={id}" } else { "" }
-    $shouldGenerateClasses = $supportsGridParameters -or $supportsStylesParameter
-    $classNameAttribute = if ($shouldGenerateClasses) { " className={classes}" } else { "" }
+    $componentCode = Get-ComponentCode `
+     	-Name $componentName `
+     	-Fields $fields `
+     	-Imports $imports `
+     	-SupportsRenderingIdentifierParameter $supportsRenderingIdentifierParameter `
+     	-SupportsGridParameters $supportsGridParameters `
+     	-SupportsStylesParameter $supportsStylesParameter
     
-    if ($imports.count -gt 0) {
-    	$componentCode += "import {`n"
-    	foreach ($import in $imports) {
-    		$componentCode += "  $($import),`n"
-    	}
-    	$componentCode += "} from '@sitecore-jss/sitecore-jss-nextjs';`n"
-    }
-    $componentCode += "import { ComponentProps } from 'lib/component-props';`n"
-    $componentCode += "`n"
-    
-    $componentCode += "type $($componentName)Props = {`n"
-    $componentCode += "  fields: {`n"
-    foreach ($fieldName in $fields.Keys) {
-    	$fieldInfo = $fields[$fieldName];
-    	$prefix = if ($fieldInfo.Unsupported) { "// " } else { "" }
-    	$componentCode += "    $($prefix)$($fieldName): $($fields[$fieldName].PropType);`n"
-    }
-    $componentCode += "  };`n"
-    $componentCode += "} & ComponentProps;`n"
-    $componentCode += "`n"
-    
-    $componentCode += "const $($componentName) = (props: $($componentName)Props): JSX.Element => {`n"
-    if ($supportsRenderingIdentifierParameter) {
-    	$componentCode += "  const id = props?.params?.RenderingIdentifier ?? undefined;`n"
-    }
-    if ($shouldGenerateClasses) {
-    	$gridParameters = if ($supportsGridParameters) { "`${props?.params?.GridParameters ?? ''}" } else { $null }
-    	$styles = if ($supportsStylesParameter) { "`${props?.params?.Styles ?? ''}" } else { $null }
-    	$classes = (@( $gridParameters,$styles) -join " ").Trim()
-    	$componentCode += "  const classes = ``$($classes)``.trimEnd();`n"
-    }
-    if ($supportsRenderingIdentifierParameter -or $shouldGenerateClasses) {
-    	$componentCode += "`n"
-    }
-    $componentCode += "  return (`n"
-    $componentCode += "    <div$($classNameAttribute)$($idAttribute)>`n"
-    foreach ($fieldName in $fields.Keys) {
-    	$componentCode += "      $($fields[$fieldName].Renderer)`n"
-    }
-    $componentCode += "    </div>`n"
-    $componentCode += "  );`n"
-    $componentCode += "};`n"
-    $componentCode += "`n"
-    $componentCode += "export const Default = withDatasourceCheck()<$($componentName)Props>($($componentName));`n"
-    
-    Show-ComponentDialog -ComponentCode $componentCode -ComponentName $componentName | Out-Null 
+    Show-ComponentDialog -Name $componentName -Code $componentCode | Out-Null 
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: <ruleset />
@@ -159,11 +117,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "53d1e88f-48a3-4100-9c72-047da36d73e1"
+      Value: "20130cd3-2a0a-43fa-890c-3f29df8e3e3a"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T191722Z
+      Value: 20240302T193530Z
