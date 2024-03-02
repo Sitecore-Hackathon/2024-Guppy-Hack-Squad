@@ -141,23 +141,23 @@ SharedFields:
     
         process {
             Write-Verbose "Cmdlet Map-FieldRenderer - Process"
-            $fieldAttribute = "field=""props.fields.$($FieldName)"""
+            $fieldAttribute = "field={props.fields.$($FieldName)}"
             
             switch ($FieldType) {
-    		    "Image" {"<NextImage $($fieldAttribute)>"; Break}
+    		    "Image" {"<NextImage $($fieldAttribute) />"; Break}
     		    
-    		    "General Link" {"<Link $($fieldAttribute)>"; Break}
+    		    "General Link" {"<Link $($fieldAttribute) />"; Break}
     		    
-    		    "Single-Line Text" {"<Text $($fieldAttribute)>"; Break}
-    		    "Multi-Line Text" {"<Text $($fieldAttribute)>"; Break}
-    		    "Rich Text" {"<RichText $($fieldAttribute)>"; Break}
-    		    "Date" {"<Text $($fieldAttribute)>"; Break}
-    		    "Datetime" {"<Text $($fieldAttribute)>"; Break}
+    		    "Single-Line Text" {"<Text $($fieldAttribute) />"; Break}
+    		    "Multi-Line Text" {"<Text $($fieldAttribute) />"; Break}
+    		    "Rich Text" {"<RichText $($fieldAttribute) />"; Break}
+    		    "Date" {"<Text $($fieldAttribute) />"; Break}
+    		    "Datetime" {"<Text $($fieldAttribute) />"; Break}
     		    
     		    "Checkbox" {"{/* No JSS component for the $($FieldName) $($FieldType) field */}"; Break}
     		    
-    		    "Integer" {"<Text $($fieldAttribute)>"; Break}
-    		    "Number" {"<Text $($fieldAttribute)>"; Break}
+    		    "Integer" {"<Text $($fieldAttribute) />"; Break}
+    		    "Number" {"<Text $($fieldAttribute) />"; Break}
     		    
     		    Default {
                     $null
@@ -198,18 +198,22 @@ SharedFields:
     }
     
     $componentCode += "type $($componentName)Props = {`n"
+    $componentCode += "  fields: {`n"
     foreach ($fieldName in $fields.Keys) {
-        $componentCode += "  $($fieldName): $($fields[$fieldName].PropType);`n"
+        $componentCode += "    $($fieldName): $($fields[$fieldName].PropType);`n"
     }
+    $componentCode += "  };`n"
     $componentCode += "};`n`n"
     
     $componentCode += "export const Default = (props: $($componentName)Props): JSX.Element => {`n"
-    $componentCode += "  <div>`n"
+    $componentCode += "  return (`n"
+    $componentCode += "    <div>`n"
     foreach ($fieldName in $fields.Keys) {
-        $componentCode += "    $($fields[$fieldName].Renderer)`n"
+        $componentCode += "      $($fields[$fieldName].Renderer)`n"
     }
-    $componentCode += "  </div>`n"
-    $componentCode += "};"
+    $componentCode += "    </div>`n"
+    $componentCode += "  );`n"
+    $componentCode += "};`n"
     
     # Display code in a dialog
     $result = Read-Variable -Parameters `
@@ -254,11 +258,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "03d8bac0-080b-4923-a56f-86ce0dd0a712"
+      Value: "bf441821-1b77-4ec9-8d8d-885bf832bac4"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T063424Z
+      Value: 20240302T064037Z
