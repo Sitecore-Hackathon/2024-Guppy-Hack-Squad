@@ -45,14 +45,99 @@ SharedFields:
         return
     }
     
+    function Map-PropType {
+        [CmdletBinding()]
+        param(
+            [Parameter(Mandatory = $true, Position = 0)]
+            [string]$FieldType
+        )
+    
+        begin {
+            Write-Verbose "Cmdlet Map-PropType - Begin"
+        }
+    
+        process {
+            Write-Verbose "Cmdlet Map-PropType - Process"
+            switch ($FieldType) {
+    		    "Image" {"ImageField"; Break}
+    		    
+    		    "General Link" {"LinkField"; Break}
+    		    
+    		    "Single-Line Text" {"Field<string>"; Break}
+    		    "Multi-Line Text" {"Field<string>"; Break}
+    		    "Rich Text" {"Field<string>"; Break}
+    		    "Date" {"Field<string>"; Break}
+    		    "Datetime" {"Field<string>"; Break}
+    		    
+    		    "Checkbox" {"Field<boolean>"; Break}
+    		    
+    		    "Integer" {"Field<number>"; Break}
+    		    "Number" {"Field<number>"; Break}
+    		    
+    		    Default {
+                    $null
+                }
+    		}
+        }
+    
+        end {
+            Write-Verbose "Cmdlet Map-PropType - End"
+        }
+    }
+    
+    function Map-FieldRenderer {
+        [CmdletBinding()]
+        param(
+            [Parameter(Mandatory = $true, Position = 2)]
+            [string]$FieldName,
+            
+            [Parameter(Mandatory = $true, Position = 1)]
+            [string]$FieldType
+        )
+    
+        begin {
+            Write-Verbose "Cmdlet Map-FieldRenderer - Begin"
+        }
+    
+        process {
+            Write-Verbose "Cmdlet Map-FieldRenderer - Process"
+            $fieldAttribute = "field=""props.fields.$($FieldName)"""
+            
+            switch ($FieldType) {
+    		    "Image" {"<NextImage $($fieldAttribute)>"; Break}
+    		    
+    		    "General Link" {"<Link $($fieldAttribute)>"; Break}
+    		    
+    		    "Single-Line Text" {"<Text $($fieldAttribute)>"; Break}
+    		    "Multi-Line Text" {"<Text $($fieldAttribute)>"; Break}
+    		    "Rich Text" {"<RichText $($fieldAttribute)>"; Break}
+    		    "Date" {"<Text $($fieldAttribute)>"; Break}
+    		    "Datetime" {"<Text $($fieldAttribute)>"; Break}
+    		    
+    		    "Checkbox" {"{/* No JSS component for the $($FieldName) $($FieldType) field */}"; Break}
+    		    
+    		    "Integer" {"<Text $($fieldAttribute)>"; Break}
+    		    "Number" {"<Text $($fieldAttribute)>"; Break}
+    		    
+    		    Default {
+                    $null
+                }
+    		}
+        }
+    
+        end {
+            Write-Verbose "Cmdlet Map-FieldRenderer - End"
+        }
+    }
+    
     # Get fields without the section items
     $fields = @{}
     Get-ChildItem -Item $datasourceTemplate -Recurse | Where-Object { $_.TemplateID -ne "{E269FBB5-3750-427A-9149-7AA950B49301}" } | ForEach-Object {
         $fields.Add(
             $_.Name,
             @{
-                PropType = $_.Type # Map the types to ImageField, LinkField, etc.
-                Renderer = "<$($_.Type) field=""props.fields.$($_.Name)"">" # Map the types to <Text>, <Link>, etc.
+                PropType = Map-PropType $_.Type
+                Renderer = Map-FieldRenderer -FieldName $_.Name -FieldType $_.Type
             }
         )
     }
@@ -110,11 +195,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "31dd00a9-ad12-4d5a-a383-de37dfd6cf5c"
+      Value: "1180b6be-ec38-446b-8c4a-58a2162fe030"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T045051Z
+      Value: 20240302T052436Z
