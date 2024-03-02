@@ -142,21 +142,24 @@ SharedFields:
         )
     }
     
-    Write-Output "File name: $($componentName).tsx"
-    
-    Write-Output `n"type $($componentName)Props = {"
+    $componentCode = "type $($componentName)Props = {`n"
     foreach ($fieldName in $fields.Keys) {
-        Write-Output "  $($fieldName): $($fields[$fieldName].PropType);"
+        $componentCode += "  $($fieldName): $($fields[$fieldName].PropType);`n"
     }
-    Write-Output "};"
+    $componentCode += "};`n`n"
     
-    Write-Output `n"export const Default = (props: $($componentName)Props): JSX.Element => {"
-    Write-Output "  <div>"
+    $componentCode += "export const Default = (props: $($componentName)Props): JSX.Element => {`n"
+    $componentCode += "  <div>`n"
     foreach ($fieldName in $fields.Keys) {
-        Write-Output "    $($fields[$fieldName].Renderer)"
+        $componentCode += "    $($fields[$fieldName].Renderer)`n"
     }
-    Write-Output "  </div>"
-    Write-Output "};"
+    $componentCode += "  </div>`n"
+    $componentCode += "};"
+    
+    $result = Read-Variable -Parameters `
+        @{ Name = "componentCode"; Value=$componentCode; Title="\src\components\$($componentName).tsx"; lines=20; Tooltip="You can put multi line text here"; Tab="Component Code"; Placeholder="You see this when text box is empty" } `
+        -Description "Copy this code into your Next.js JSS project to get started with the $($componentName) component." `
+        -Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close"
 - ID: "f62c67b4-28b6-4a6f-91cb-db78cf054f4e"
   Hint: EnableRule
   Value: |
@@ -195,11 +198,11 @@ Languages:
         sitecore\jflheureux@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "1180b6be-ec38-446b-8c4a-58a2162fe030"
+      Value: "347a4920-8cef-4362-8a33-e12f2163c810"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T052436Z
+      Value: 20240302T061025Z
