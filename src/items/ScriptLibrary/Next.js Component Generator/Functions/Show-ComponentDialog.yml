@@ -32,7 +32,7 @@ SharedFields:
     			Tab = "Component Code"
     			Placeholder = "No code was generated."
     		} -Description "Copy this code into your Next.js JSS project to get started with the $($Name) component." `
-     			-Title "Guppy Hack Crew Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close"
+     			-Title "Guppy Hack Squad Next.js Component Generator" -Width 600 -Height 600 -OkButtonName "Close"
     	}
     
     	end {
@@ -58,11 +58,11 @@ Languages:
         sitecore\kburatynski@getfishtank.ca
     - ID: "8cdc337e-a112-42fb-bbb4-4143751e123f"
       Hint: __Revision
-      Value: "ff7d3676-92ed-4976-b6c3-ec2830ce9a21"
+      Value: "8834a368-27fc-4bc6-b218-fa51b6e00515"
     - ID: "badd9cf9-53e0-4d0c-bcc0-2d784c282f6a"
       Hint: __Updated by
       Value: |
         sitecore\jflheureux@getfishtank.ca
     - ID: "d9cf14b1-fa16-4ba6-9288-e8a174d4d522"
       Hint: __Updated
-      Value: 20240302T193551Z
+      Value: 20240302T194411Z
