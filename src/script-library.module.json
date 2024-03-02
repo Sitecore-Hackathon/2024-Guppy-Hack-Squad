@@ -1,0 +1,13 @@
+{
+    "$schema": "../.sitecore/schemas/ModuleFile.schema.json",
+    "namespace": "ScriptLibrary",
+    "items": {
+        "includes": [
+            {
+                "name": "ScriptLibrary",
+                "path": "/sitecore/system/Modules/PowerShell/Script Library/Next.js Component Generator",
+                "scope": "ItemAndDescendants"
+            }
+        ]
+    }
+}
