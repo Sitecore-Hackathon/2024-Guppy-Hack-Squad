@@ -12,13 +12,29 @@ Best Module for XM/XP or XM Cloud
 
 ## Description
 
-⟹ Write a clear description of your hackathon entry.
+### Purpose
 
-- Module Purpose
-- What problem was solved (if any)
-  - How does this module solve it
+This script facilitates the generation of a Next.js component file from a Sitecore JSON rendering item, providing a streamlined process for incorporating essential fields and parameters. By leveraging this script, users can create Next.js components with all the datasource template fields in the component prop type and these fields rendered on the screen, enhancing development efficiency. The common Headless SXA rendering parameters are also included when needed. This tool is designed to empower developers by automating the tedious aspects of component boilerplate creation, accelerating the time to market.
 
-_You can alternately paste a [link here](#docs) to a document within this repo containing the description._
+### Problem solved
+
+### How it helps
+
+### Capabilities
+
+- Generate prop type
+  - Generate comments for unsupported field types
+- Generate render function skeleton with all fields
+  - Generate comments for unsupported field types
+- Generate the required import statements
+  - Support common Headless SXA rendering parameters (Rendering ID, Grid parameters, Styles)
+
+### Limitations
+
+- Placeholders
+- Extra rendering parameters
+- Integrated GraphQL query
+- Headless SXA variants
 
 ## Video link
 
@@ -28,13 +44,9 @@ _You can alternately paste a [link here](#docs) to a document within this repo c
 
 ## Pre-requisites and Dependencies
 
-⟹ Does your module rely on other Sitecore modules or frameworks?
-
-- List any dependencies
-- Or other modules that must be installed
-- Or services that must be enabled/configured
-
-_Remove this subsection if your entry does not have any prerequisites other than Sitecore_
+- Sitecore PowerShell Extensions (SPE)
+- Sitecore Headless Services
+- Sitecore Headless SXA
 
 ## Installation instructions
 
